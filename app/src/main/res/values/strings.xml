@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BookSearchApp</string>
 
-    <string name="search">SearchFragment</string>
-    <string name="settings">SettingsFragment</string>
-    <string name="favorite">FavoriteFragment</string>
+    <string name="search">Search Books</string>
+    <string name="settings">Settings</string>
+    <string name="favorite">Favorite Books</string>
 </resources>

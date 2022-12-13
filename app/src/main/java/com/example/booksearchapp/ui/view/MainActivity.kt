@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setupBottomNavigationView()
         if (savedInstanceState == null) {
             binding.bottomNavigationView.selectedItemId = R.id.fragment_search
         }
-        setupBottomNavigationView()
 
         val bookSearchRepository = BookSearchRepositoryImpl()
         val factory = BookSearchViewModelProviderFactory(bookSearchRepository)

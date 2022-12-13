@@ -37,14 +37,12 @@ class SearchFragment : Fragment() {
         setupRecyclerView()
         searchBooks()
 
-        // saerchResult를 관찰하여 변경될 때마다 화면 업데이트
         bookSearchViewModel.searchResult.observe(viewLifecycleOwner) { response ->
             val books = response.documents
             bookSearchAdapter.submitList(books)
         }
     }
 
-    //recyclerview 설정
     private fun setupRecyclerView() {
         bookSearchAdapter = BookSearchAdapter()
         binding.rvSearchResult.apply {
@@ -61,20 +59,22 @@ class SearchFragment : Fragment() {
         }
     }
 
-    //editText 동작 정의
     private fun searchBooks() {
         var startTime = System.currentTimeMillis()
         var endTime: Long
 
+        binding.etSearch.text =
+            Editable.Factory.getInstance().newEditable(bookSearchViewModel.query)
+
         binding.etSearch.addTextChangedListener { text: Editable? ->
             endTime = System.currentTimeMillis()
-            // 처음 입력과 두 번쨰 입력 사이의 시간을 고려
-            if (endTime - startTime >= SEARCH_BOOKS_TIME_DELAY) { // 사람의 입력 시간을 고려해서 검색 실행까지 딜레이를 준다.
+
+            if (endTime - startTime >= SEARCH_BOOKS_TIME_DELAY) {
                 text?.let {
                     val query = it.toString().trim()
                     if (query.isNotEmpty()) {
-                        //editText에 text가 입력되면 값을 viewModel에 전달해 searchBooks를 실행시킨다.
                         bookSearchViewModel.searchBooks(query)
+                        bookSearchViewModel.query = query
                     }
                 }
             }

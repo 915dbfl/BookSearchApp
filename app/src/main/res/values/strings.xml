@@ -8,4 +8,5 @@
     <string name="author">AUTHOR</string>
     <string name="datetime">DATETIME</string>
     <string name="searching">Search...</string>
+    <string name="book_info">Book Info</string>
 </resources>

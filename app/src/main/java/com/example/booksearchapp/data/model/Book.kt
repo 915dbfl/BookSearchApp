@@ -13,13 +13,14 @@ import kotlinx.parcelize.Parcelize
 @JsonClass(generateAdapter = true)
 @Entity(tableName = "books")
 data class Book(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     @field:Json(name = "authors")
     val authors: List<String>,
     @field:Json(name = "contents")
     val contents: String,
     @field:Json(name = "datetime")
     val datetime: String,
-    @PrimaryKey(autoGenerate = false)
     @field:Json(name = "isbn")
     val isbn: String,
     @field:Json(name = "price")

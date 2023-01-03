@@ -7,8 +7,10 @@ import com.example.booksearchapp.data.repository.BookSearchRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class BookSearchViewModel(
@@ -21,7 +23,7 @@ class BookSearchViewModel(
 
     fun searchBooks(query: String) = viewModelScope.launch(Dispatchers.IO) {
         val response: Response<SearchResponse> =
-            bookSearchRepository.searchBooks(query, "accuracy", 1, 15)
+            bookSearchRepository.searchBooks(query, getSortMode(), 1, 15)
 
         if (response.isSuccessful) {
             response.body()?.let { body ->
@@ -38,7 +40,7 @@ class BookSearchViewModel(
     fun deleteBook(book: Book) = viewModelScope.launch(Dispatchers.IO) {
         bookSearchRepository.deleteBooks(book)
     }
-    
+
     val favoriteBooks: StateFlow<List<Book>> = bookSearchRepository.getFavoriteBooks()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
 
@@ -54,5 +56,16 @@ class BookSearchViewModel(
 
     companion object {
         private const val SAVE_STATE_KEY = "query"
+    }
+
+    //DataStore
+    fun saveSortMode(value: String) = viewModelScope.launch(Dispatchers.IO) {
+        bookSearchRepository.saveSortMode(value)
+    }
+
+    //withContext를 통해 반드시 값이 반환된 후 종료된다.
+    suspend fun getSortMode() = withContext(Dispatchers.IO) {
+        //전체 데이터 스트림을 구독할 필요가 없기 때문에 first를 사용해 단일 스트림을 가져온다.
+        bookSearchRepository.getSortMode().first()
     }
 }

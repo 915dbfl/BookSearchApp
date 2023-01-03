@@ -18,4 +18,8 @@ interface BookSearchRepository {
     suspend fun deleteBooks(book: Book)
 
     fun getFavoriteBooks(): Flow<List<Book>>
+
+    suspend fun saveSortMode(mode: String)
+
+    suspend fun getSortMode(): Flow<String>
 }

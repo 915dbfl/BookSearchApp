@@ -5,12 +5,15 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booksearchapp.databinding.FragmentSearchBinding
+import com.example.booksearchapp.ui.adapter.BookSearchLoadStateAdapter
 import com.example.booksearchapp.ui.adapter.BookSearchPagingAdapter
 import com.example.booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.example.booksearchapp.util.Constants.SEARCH_BOOKS_TIME_DELAY
@@ -21,8 +24,6 @@ class SearchFragment : Fragment() {
     private val binding: FragmentSearchBinding get() = _binding!!
 
     private lateinit var bookSearchViewModel: BookSearchViewModel
-
-    //    private lateinit var bookSearchAdapter: BookSearchAdapter
     private lateinit var bookSearchAdapter: BookSearchPagingAdapter
 
     override fun onCreateView(
@@ -40,18 +41,14 @@ class SearchFragment : Fragment() {
 
         setupRecyclerView()
         searchBooks()
+        setupLoadState()
 
-//        bookSearchViewModel.searchResult.observe(viewLifecycleOwner) { response ->
-//            val books = response.documents
-//            bookSearchAdapter.submitList(books)
-//        }
         collectLatestStateFlow(bookSearchViewModel.searchPagingResult) {
             bookSearchAdapter.submitData(it)
         }
     }
 
     private fun setupRecyclerView() {
-//        bookSearchAdapter = BookSearchAdapter()
         bookSearchAdapter = BookSearchPagingAdapter()
         binding.rvSearchResult.apply {
             setHasFixedSize(true)
@@ -63,7 +60,9 @@ class SearchFragment : Fragment() {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            adapter = bookSearchAdapter
+            adapter = bookSearchAdapter.withLoadStateFooter(
+                footer = BookSearchLoadStateAdapter(bookSearchAdapter::retry)
+            )
         }
 
         bookSearchAdapter.setOnItemClickListener {
@@ -86,13 +85,26 @@ class SearchFragment : Fragment() {
                 text?.let {
                     val query = it.toString().trim()
                     if (query.isNotEmpty()) {
-//                        bookSearchViewModel.searchBooks(query)
                         bookSearchViewModel.searchBookPaging(query)
                         bookSearchViewModel.query = query
                     }
                 }
             }
             startTime = endTime
+        }
+    }
+
+    private fun setupLoadState() {
+        bookSearchAdapter.addLoadStateListener { combindedLoadStates ->
+            val loadState = combindedLoadStates.source
+            val isListEmpty = bookSearchAdapter.itemCount < 1
+                    && loadState.refresh is LoadState.NotLoading
+                    && loadState.append.endOfPaginationReached
+
+            binding.tvEmptylist.isVisible = isListEmpty
+            binding.rvSearchResult.isVisible = !isListEmpty
+            binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
+
         }
     }
 

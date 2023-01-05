@@ -84,5 +84,16 @@ class BookSearchRepositoryImpl(
         ).flow
     }
 
+    override fun searchBookPaging(query: String, sort: String): Flow<PagingData<Book>> {
+        val pagingSourceFactory = { BookSearchPagingSource(query, sort) }
 
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGING_SIZE,
+                enablePlaceholders = false,
+                maxSize = PAGING_SIZE * 3
+            ),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow
+    }
 }

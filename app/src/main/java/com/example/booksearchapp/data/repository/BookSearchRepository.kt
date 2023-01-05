@@ -26,4 +26,6 @@ interface BookSearchRepository {
 
     //Paging
     fun getFavoritePagingBooks(): Flow<PagingData<Book>>
+
+    fun searchBookPaging(query: String, sort: String): Flow<PagingData<Book>>
 }

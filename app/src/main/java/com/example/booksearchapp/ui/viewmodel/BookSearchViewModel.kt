@@ -38,7 +38,6 @@ class BookSearchViewModel @Inject constructor(
         }
     }
 
-    //Room
     fun saveBook(book: Book) = viewModelScope.launch(Dispatchers.IO) {
         bookSearchRepository.insertBooks(book)
     }
@@ -62,8 +61,6 @@ class BookSearchViewModel @Inject constructor(
 
     companion object {
         private const val SAVE_STATE_KEY = "query"
-
-        //workmanager 작업의 태그로 사용할 worker key 의의
         private val WORKER_KEY = "cache_worker"
     }
 

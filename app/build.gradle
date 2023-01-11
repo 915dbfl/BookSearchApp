@@ -5,11 +5,12 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
     namespace 'com.example.booksearchapp'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.booksearchapp"
@@ -36,6 +37,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    //kapt가 에러타입을 알아서 판단할 수 있도록
+    kapt {
+        correctErrorTypes true
     }
 }
 
@@ -97,4 +102,16 @@ dependencies {
 
     //WorkManager
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
+    //Hilt
+    implementation 'com.google.dagger:hilt-android:2.44'
+    kapt 'com.google.dagger:hilt-android-compiler:2.44'
+
+    //viewModel delegate
+    implementation 'androidx.activity:activity-ktx:1.6.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.5'
+
+    //Hilt extension
+    implementation 'androidx.hilt:hilt-work:1.0.0'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 }

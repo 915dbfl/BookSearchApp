@@ -44,6 +44,11 @@ android {
     kapt {
         correctErrorTypes = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -57,9 +62,16 @@ dependencies {
     testImplementation(Testing.JUNIT4)
     testImplementation("androidx.test.ext:truth:1.5.0")
     testImplementation("androidx.test:runner:1.5.2")
+    testImplementation("org.robolectric:robolectric:4.9.2")
+    testImplementation(Testing.ANDROID_JUNIT)
+    testImplementation("androidx.test:core-ktx:1.5.0")
 
     androidTestImplementation(Testing.ANDROID_JUNIT)
     androidTestImplementation(Testing.ESPRESSO_CORE)
+    androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    androidTestImplementation("androidx.test.ext:truth:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
     //Retrofit
     implementation(Dependencies.RETROFIT)

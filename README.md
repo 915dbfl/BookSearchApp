@@ -4,10 +4,10 @@
 카카오 책 검색 api를 활용하여 책 검색, 저장 기능을 구현한 앱입니다.
 
 ## 주요 기능🙋‍♀️
-* 책 검색 및 정보 제공
+* 📑 책 검색 및 정보 제공
    * 검색 목록을 정확도/최신순으로 확인할 수 있고, 클릭 시 책의 상세 정보를 확인할 수 있습니다.
    
-* 관심 책 저장 기능
+* 🧺 관심 책 저장 기능
    * 관심있는 항목을 저장해 한눈에 확인 가능합니다.
    
 
@@ -18,16 +18,22 @@
 </p>
 
 
-## 사용 기술 및 라이브러리⌨️
-* MVVM
-* Android Jetpack
+## 기술 스택⌨️
+* **Architecture**
+    * MVVM
+* **Android Jetpack**
     * ViewModel
     * LiveData
     * View Binding
     * Navigation
-    * Room
     * Paging
-    * DataStore
-- Retrofit2 / okHttp3
-- Kotlin Coroutine
-- Kakao Open Api
+* **Network**
+    * Retrofit2 / okHttp3
+* **Asynchronous**
+    * Kotlin Coroutine
+* **Database**
+    * DataStore / Room
+* **DI**
+    * Hilt
+* **Test**
+    * JUnit4

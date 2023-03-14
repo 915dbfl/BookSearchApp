@@ -35,5 +35,3 @@
     * DataStore / Room
 * **DI**
     * Hilt
-* **Test**
-    * JUnit4
